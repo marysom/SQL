@@ -72,12 +72,14 @@ SELECT AVG(speed) FROM laptop WHERE speed IN (SELECT speed FROM laptop WHERE pri
 
 Задача 13:
 ```sql
-SELECT AVG(speed) FROM pc WHERE model IN (SELECT model FROM product WHERE maker = 'A' and type = 'PC')
+SELECT AVG(speed) FROM pc WHERE model IN (SELECT model FROM product 
+  WHERE maker = 'A' and type = 'PC')
 ```
 
 Задача 14:
 ```sql
-SELECT maker, MAX(type) FROM product GROUP BY maker HAVING COUNT(DISTINCT model)>1 AND COUNT(DISTINCT type) = 1
+SELECT maker, MAX(type) FROM product GROUP BY maker 
+  HAVING COUNT(DISTINCT model)>1 AND COUNT(DISTINCT type) = 1
 ```
 
 Задача 15:
@@ -97,3 +99,14 @@ SELECT DISTINCT product.type, laptop.model, laptop.speed FROM product, laptop
   WHERE laptop.speed < ALL (SELECT speed FROM pc) AND product.type = 'Laptop'
 ```
 
+Задача 18:
+```sql
+SELECT DISTINCT product.maker, printer.price FROM product INNER JOIN printer ON product.model = printer.model 
+  WHERE printer.color = 'y' AND printer.price IN (SELECT MIN(price) FROM printer WHERE color = 'y')
+```
+
+Задача 19:
+```sql
+SELECT product.maker, AVG(laptop.screen) FROM product INNER JOIN laptop ON product.model = laptop.model 
+  GROUP BY product.maker
+```
