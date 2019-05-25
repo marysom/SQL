@@ -69,3 +69,31 @@ SELECT AVG(speed) FROM pc
 ```sql
 SELECT AVG(speed) FROM laptop WHERE speed IN (SELECT speed FROM laptop WHERE price > 1000)
 ```
+
+Задача 13:
+```sql
+SELECT AVG(speed) FROM pc WHERE model IN (SELECT model FROM product WHERE maker = 'A' and type = 'PC')
+```
+
+Задача 14:
+```sql
+SELECT maker, MAX(type) FROM product GROUP BY maker HAVING COUNT(DISTINCT model)>1 AND COUNT(DISTINCT type) = 1
+```
+
+Задача 15:
+```sql
+SELECT hd FROM pc GROUP BY hd HAVING COUNT(hd)>=2
+```
+
+Задача 16:
+```sql
+SELECT DISTINCT a.model, b.model, a.speed, a.ram FROM pc as a, pc as b 
+  WHERE a.speed = b.speed AND a.ram = b.ram AND a.model > b.model
+```
+
+Задача 17:
+```sql
+SELECT DISTINCT product.type, laptop.model, laptop.speed FROM product, laptop 
+  WHERE laptop.speed < ALL (SELECT speed FROM pc) AND product.type = 'Laptop'
+```
+
