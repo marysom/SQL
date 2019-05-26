@@ -110,3 +110,38 @@ SELECT DISTINCT product.maker, printer.price FROM product INNER JOIN printer ON 
 SELECT product.maker, AVG(laptop.screen) FROM product INNER JOIN laptop ON product.model = laptop.model 
   GROUP BY product.maker
 ```
+
+Задача 20:
+```sql
+SELECT maker, COUNT(model) FROM product WHERE type = 'PC' GROUP BY maker HAVING COUNT(model) >= 3
+```
+
+Задача 21:
+```sql
+SELECT product.maker, MAX(pc.price) FROM product, pc WHERE product.model = pc.model GROUP BY product.maker
+```
+
+Задача 22:
+```sql
+SELECT speed, AVG(price) FROM pc WHERE speed > 600 GROUP BY speed
+```
+
+Задача 23:
+```sql
+SELECT DISTINCT product.maker FROM product INNER JOIN pc ON product.model = pc.model 
+  WHERE pc.speed >= 750 AND product.maker IN (SELECT product.maker 
+    FROM product INNER JOIN laptop ON product.model = laptop.model WHERE laptop.speed >= 750)
+```
+
+Задача 24:
+```sql
+SELECT model FROM (SELECT model, price FROM pc UNION SELECT model, price 
+  FROM laptop UNION SELECT model, price FROM printer) table_first 
+  WHERE price = (SELECT MAX(price) FROM (SELECT price FROM pc UNION SELECT price 
+  FROM laptop UNION SELECT price FROM printer) table_second)
+```
+
+Задача 25:
+```sql
+SELECT DISTINCT maker FROM product WHERE model IN (SELECT model FROM pc WHERE ram = (SELECT MIN(ram) FROM pc) AND speed = (SELECT MAX(speed) FROM pc WHERE ram = (SELECT MIN(ram) FROM pc))) AND maker IN(SELECT maker FROM product WHERE type = 'printer')
+```
