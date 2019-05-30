@@ -449,3 +449,96 @@ AND (
 AND classes.displacement > 35000 
 AND classes.type = 'bb'
 ```
+
+Задача 35:
+```sql
+SELECT DISTINCT model
+, type 
+FROM product 
+WHERE model NOT LIKE '%[^0-9]%' 
+UNION
+SELECT DISTINCT model
+, type 
+FROM product 
+WHERE model NOT LIKE '%[^a-zA-Z]%'
+```
+
+Задача 36:
+```sql
+SELECT DISTINCT name 
+FROM ships 
+WHERE name IN(
+  SELECT DISTINCT class 
+  FROM classes)
+UNION
+SELECT DISTINCT ship 
+FROM outcomes 
+WHERE ship IN (
+  SELECT DISTINCT classes.class 
+  FROM classes
+  , ships 
+  WHERE classes.class NOT IN (
+    SELECT DISTINCT name 
+    FROM ships 
+    WHERE name IN(
+      SELECT DISTINCT 
+      class FROM classes)))
+```
+
+Задача 37:
+```sql
+SELECT DISTINCT cl.class 
+FROM classes cl 
+LEFT JOIN (
+  SELECT class
+  , name 
+  FROM ships 
+  UNION 
+  SELECT ship
+  , ship 
+  FROM outcomes) AS sl 
+ON sl.class = cl.class 
+GROUP BY cl.class 
+HAVING COUNT(sl.name) = 1
+```
+
+Задача 38:
+```sql
+SELECT country 
+FROM classes 
+WHERE type = 'bb'
+INTERSECT 
+SELECT 
+country 
+FROM classes 
+WHERE type = 'bc'
+```
+
+Задача 39:
+```sql
+SELECT DISTINCT 
+outcomes.ship 
+FROM outcomes 
+LEFT JOIN battles 
+ON outcomes.battle = battles.name 
+WHERE EXISTS (
+  SELECT a.ship
+  , b.date 
+  FROM outcomes as a 
+  LEFT JOIN battles as b 
+  ON a.battle = b.name 
+  WHERE battles.date > b.date 
+  AND a.result = 'damaged' 
+  AND outcomes.ship = a.ship)
+```
+
+Задача 40:
+```sql
+SELECT classes.class
+, ships.name
+, classes.country 
+FROM ships 
+LEFT JOIN classes 
+ON ships.class = classes.class 
+WHERE numguns >= 10
+```
