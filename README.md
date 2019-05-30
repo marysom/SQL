@@ -255,81 +255,197 @@ AND product.maker IN (
 SELECT model 
 FROM (
   SELECT model
-  , price FROM pc UNION SELECT model, price 
-  FROM laptop UNION SELECT model, price FROM printer) table_first 
-  WHERE price = (SELECT MAX(price) FROM (SELECT price FROM pc UNION SELECT price 
-  FROM laptop UNION SELECT price FROM printer) table_second)
+  , price 
+  FROM pc 
+  UNION 
+  SELECT model
+  , price 
+  FROM laptop 
+  UNION 
+  SELECT model
+  , price 
+  FROM printer) table_first 
+WHERE price = (
+  SELECT MAX(price) 
+  FROM (
+    SELECT price 
+    FROM pc 
+    UNION 
+    SELECT price 
+    FROM laptop 
+    UNION 
+    SELECT price 
+    FROM printer) table_second)
 ```
 
 Задача 25:
 ```sql
-SELECT DISTINCT maker FROM product WHERE model IN (
-  SELECT model FROM pc WHERE ram = (SELECT MIN(ram) FROM pc) 
-  AND speed = (SELECT MAX(speed) FROM pc WHERE ram = (SELECT MIN(ram) FROM pc))) 
-  AND maker IN(SELECT maker FROM product WHERE type = 'printer')
+SELECT DISTINCT maker 
+FROM product 
+WHERE model IN (
+  SELECT model 
+  FROM pc 
+  WHERE ram = (
+    SELECT MIN(ram) 
+    FROM pc) 
+  AND speed = (
+    SELECT MAX(speed) 
+    FROM pc 
+    WHERE ram = (
+      SELECT MIN(ram) 
+      FROM pc))) 
+AND maker IN(
+  SELECT maker 
+  FROM product 
+  WHERE type = 'printer')
 ```
 
 Задача 26:
 ```sql
-SELECT AVG(price) FROM (
-  (SELECT price FROM pc WHERE model IN(SELECT model FROM product WHERE maker = 'A')) 
-   UNION ALL
-  (SELECT price FROM laptop WHERE model IN(SELECT model FROM product WHERE maker = 'A'))) as t
+SELECT AVG(price) 
+FROM (
+  (SELECT price 
+  FROM pc 
+  WHERE model IN(
+    SELECT model 
+    FROM product 
+    WHERE maker = 'A')) 
+  UNION ALL
+  (SELECT price 
+  FROM laptop 
+  WHERE model IN(
+    SELECT model 
+    FROM product 
+    WHERE maker = 'A'))) as t
 ```
 
 Задача 27:
 ```sql
-SELECT product.maker, AVG(pc.hd) as hdsr FROM product INNER JOIN pc ON product.model = pc.model 
-  GROUP BY product.maker HAVING product.maker IN(SELECT maker FROM product WHERE type = 'printer')
+SELECT product.maker
+, AVG(pc.hd) as hdsr 
+FROM product 
+INNER JOIN pc 
+ON product.model = pc.model 
+GROUP BY product.maker 
+HAVING product.maker IN(
+  SELECT maker 
+  FROM product 
+  WHERE type = 'printer')
 ```
 
 Задача 28:
 ```sql
-SELECT COUNT(maker) FROM (SELECT maker, COUNT(model) as kol FROM product GROUP BY maker HAVING COUNT(model) = 1) as t
+SELECT COUNT(maker) 
+FROM (
+  SELECT maker
+  , COUNT(model) as kol 
+  FROM product 
+  GROUP BY maker 
+  HAVING COUNT(model) = 1) as t
 ```
 
 Задача 29:
 ```sql
-SELECT income_o.point, income_o.date, income_o.inc, outcome_o.out FROM income_o LEFT JOIN outcome_o ON income_o.point = outcome_o.point AND income_o.date = outcome_o.date
+SELECT income_o.point
+, income_o.date
+, income_o.inc
+, outcome_o.out 
+FROM income_o 
+LEFT JOIN outcome_o 
+ON income_o.point = outcome_o.point 
+AND income_o.date = outcome_o.date
 UNION
-SELECT outcome_o.point, outcome_o.date, income_o.inc, outcome_o.out FROM income_o RIGHT JOIN outcome_o ON income_o.point = outcome_o.point AND income_o.date = outcome_o.date
+SELECT outcome_o.point
+, outcome_o.date
+, income_o.inc
+, outcome_o.out 
+FROM income_o 
+RIGHT JOIN outcome_o 
+ON income_o.point = outcome_o.point 
+AND income_o.date = outcome_o.date
 ```
 
 Задача 30:
 ```sql
-SELECT point, date, SUM(sumout), SUM(suminc) FROM(
-  SELECT point, date, SUM(inc) as suminc, null as sumout FROM income GROUP BY point, date 
-   UNION 
-  SELECT point, date, null as suminc, SUM(out) as sumout FROM outcome GROUP BY point, date ) as t 
-    GROUP BY point, date ORDER BY point
+SELECT point
+, date
+, SUM(sumout)
+, SUM(suminc) 
+FROM(
+  SELECT point
+  , date
+  , SUM(inc) as suminc
+  , null as sumout 
+  FROM income 
+  GROUP BY point
+  , date 
+  UNION 
+  SELECT point
+  , date
+  , null as suminc
+  , SUM(out) as sumout 
+  FROM outcome 
+  GROUP BY point
+  , date ) as t 
+GROUP BY point
+, date 
+ORDER BY point
 
 ```
 
 Задача 31:
 ```sql
-SELECT class, country FROM classes WHERE bore >= 16
+SELECT class
+, country 
+FROM classes 
+WHERE bore >= 16
 ```
 
 Задача 32:
 ```sql
-SELECT country, CAST( AVG(0.5*(power(bore,3))) AS NUMERIC(6,2)) 
-  FROM (SELECT country, classes.class, bore, name FROM classes LEFT JOIN ships on classes.class=ships.class 
-   UNION 
-  SELECT DISTINCT country, class, bore, ship FROM classes table1 LEFT JOIN outcomes table2 on table1.class=table2.ship 
-    WHERE ship=class and ship NOT IN (SELECT name FROM ships) ) t
-    WHERE name IS NOT NULL 
-    GROUP BY country
+SELECT country
+, CAST( AVG(0.5*(power(bore,3))) AS NUMERIC(6,2)) 
+FROM (
+  SELECT country
+  , classes.class
+  , bore
+  , name 
+  FROM classes 
+  LEFT JOIN ships 
+  ON classes.class=ships.class 
+  UNION 
+  SELECT DISTINCT country
+  , class
+  , bore
+  , ship 
+  FROM classes table1 
+  LEFT JOIN outcomes table2 
+  ON table1.class=table2.ship 
+  WHERE ship=class 
+  AND ship NOT IN (
+    SELECT name FROM ships) ) t
+WHERE name IS NOT NULL 
+GROUP BY country
 
 ```
 
 Задача 33:
 ```sql
-SELECT ship FROM outcomes WHERE battle = 'North Atlantic' AND result = 'sunk'
+SELECT ship 
+FROM outcomes 
+WHERE battle = 'North Atlantic' 
+AND result = 'sunk'
 ```
 
 Задача 34:
 ```sql
-SELECT DISTINCT ships.name  FROM ships, classes 
-  WHERE ships.class = classes.class AND (ships.launched >= 1922 AND ships.launched IS NOT NULL )  
-  AND classes.displacement > 35000 AND classes.type = 'bb'
+SELECT DISTINCT ships.name  
+FROM ships
+, classes 
+WHERE ships.class = classes.class 
+AND (
+  ships.launched >= 1922 
+  AND ships.launched IS NOT NULL )  
+AND classes.displacement > 35000 
+AND classes.type = 'bb'
 ```
