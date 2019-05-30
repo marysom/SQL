@@ -184,41 +184,78 @@ AND product.type = 'Laptop'
 
 Задача 18:
 ```sql
-SELECT DISTINCT product.maker, printer.price FROM product INNER JOIN printer ON product.model = printer.model 
-  WHERE printer.color = 'y' AND printer.price IN (SELECT MIN(price) FROM printer WHERE color = 'y')
+SELECT DISTINCT product.maker
+, printer.price 
+FROM product 
+INNER JOIN printer 
+ON product.model = printer.model 
+WHERE printer.color = 'y' 
+AND printer.price IN (
+  SELECT MIN(price) 
+  FROM printer 
+  WHERE color = 'y')
 ```
 
 Задача 19:
 ```sql
-SELECT product.maker, AVG(laptop.screen) FROM product INNER JOIN laptop ON product.model = laptop.model 
-  GROUP BY product.maker
+SELECT product.maker
+, AVG(laptop.screen) 
+FROM product 
+INNER JOIN laptop 
+ON product.model = laptop.model 
+GROUP BY product.maker
 ```
 
 Задача 20:
 ```sql
-SELECT maker, COUNT(model) FROM product WHERE type = 'PC' GROUP BY maker HAVING COUNT(model) >= 3
+SELECT maker
+, COUNT(model) 
+FROM product 
+WHERE type = 'PC' 
+GROUP BY maker 
+HAVING COUNT(model) >= 3
 ```
 
 Задача 21:
 ```sql
-SELECT product.maker, MAX(pc.price) FROM product, pc WHERE product.model = pc.model GROUP BY product.maker
+SELECT product.maker
+, MAX(pc.price) 
+FROM product
+, pc 
+WHERE product.model = pc.model 
+GROUP BY product.maker
 ```
 
 Задача 22:
 ```sql
-SELECT speed, AVG(price) FROM pc WHERE speed > 600 GROUP BY speed
+SELECT speed
+, AVG(price) 
+FROM pc 
+WHERE speed > 600 
+GROUP BY speed
 ```
 
 Задача 23:
 ```sql
-SELECT DISTINCT product.maker FROM product INNER JOIN pc ON product.model = pc.model 
-  WHERE pc.speed >= 750 AND product.maker IN (SELECT product.maker 
-    FROM product INNER JOIN laptop ON product.model = laptop.model WHERE laptop.speed >= 750)
+SELECT DISTINCT product.maker 
+FROM product 
+INNER JOIN pc 
+ON product.model = pc.model 
+WHERE pc.speed >= 750 
+AND product.maker IN (
+  SELECT product.maker 
+  FROM product 
+  INNER JOIN laptop 
+  ON product.model = laptop.model 
+  WHERE laptop.speed >= 750)
 ```
 
 Задача 24:
 ```sql
-SELECT model FROM (SELECT model, price FROM pc UNION SELECT model, price 
+SELECT model 
+FROM (
+  SELECT model
+  , price FROM pc UNION SELECT model, price 
   FROM laptop UNION SELECT model, price FROM printer) table_first 
   WHERE price = (SELECT MAX(price) FROM (SELECT price FROM pc UNION SELECT price 
   FROM laptop UNION SELECT price FROM printer) table_second)
