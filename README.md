@@ -4,24 +4,27 @@ _____________
 _____________
 Задача 1:
 ```sql
-SELECT model
-, speed
-, hd 
+SELECT 
+    model
+  , speed 
+  , hd 
 FROM pc 
 WHERE price < 500
 ```
 Задача 2:
 ```sql
-SELECT DISTINCT maker 
+SELECT DISTINCT 
+  maker 
 FROM product 
 WHERE type = 'Printer'
 ```
 
 Задача 3:
 ```sql
-SELECT model
-, ram
-, screen 
+SELECT 
+    model
+  , ram
+  , screen 
 FROM laptop 
 WHERE price > 1000
 ```
@@ -35,122 +38,154 @@ WHERE color = 'y'
 
 Задача 5:
 ```sql
-SELECT model
-, speed
-, hd 
+SELECT 
+    model
+  , speed
+  , hd 
 FROM pc 
 WHERE price < 600 
-AND (cd = '12x' OR cd = '24x')
+  AND (cd = '12x' OR cd = '24x')
 ```
 
 Задача 6:
 ```sql
-SELECT DISTINCT product.maker AS Meker
-, laptop.speed AS speed 
+SELECT DISTINCT 
+    product.maker AS Meker
+  , laptop.speed AS speed 
 FROM product 
-RIGHT JOIN laptop 
-ON product.model = laptop.model 
+  RIGHT JOIN laptop 
+    ON 
+      (
+      product.model = laptop.model 
+      )
 WHERE laptop.hd >= 10  
-AND product.type = 'Laptop'
+  AND product.type = 'Laptop'
 ORDER BY speed
 ```
 
 Задача 7:
 ```sql
-SELECT pc.model
-, pc.price 
+SELECT 
+    pc.model
+  , pc.price 
 FROM pc 
-INNER JOIN product 
-ON pc.model = product.model 
+  INNER JOIN product 
+    ON 
+      (
+      pc.model = product.model 
+      )
 WHERE product.maker = 'B'
 UNION
-SELECT laptop.model
-, laptop.price 
+SELECT 
+    laptop.model
+  , laptop.price 
 FROM laptop 
-INNER JOIN product 
-ON laptop.model = product.model 
+  INNER JOIN product 
+    ON 
+      (
+      laptop.model = product.model 
+      )
 WHERE product.maker = 'B'
 UNION
-SELECT printer.model
-, printer.price 
+SELECT 
+    printer.model
+  , printer.price 
 FROM printer 
-INNER JOIN product 
-ON printer.model = product.model 
+  INNER JOIN product 
+    ON
+      (
+      printer.model = product.model 
+      )
 WHERE product.maker = 'B' 
 ORDER BY price
 ```
 
 Задача 8:
 ```sql
-SELECT DISTINCT maker 
+SELECT DISTINCT 
+  maker 
 FROM product 
 WHERE type = 'PC' 
-AND maker NOT IN (
-  SELECT maker 
-  FROM product 
-  WHERE type = 'Laptop')
+  AND maker NOT IN (
+    SELECT 
+      maker 
+    FROM product 
+    WHERE type = 'Laptop')
 ```
 
 
 Задача 9:
 ```sql
-SELECT DISTINCT product.maker Maker 
+SELECT DISTINCT 
+  product.maker Maker 
 FROM product 
-INNER JOIN pc 
-ON product.model = pc.model 
+  INNER JOIN pc 
+    ON 
+      (
+      product.model = pc.model 
+      )
 WHERE pc.speed >= 450
 ```
 
 Задача 10:
 ```sql
-SELECT model
-, price 
+SELECT 
+    model
+  , price 
 FROM printer 
 WHERE price  = (
-  SELECT max(price) 
-  FROM printer)
+    SELECT 
+      max(price) 
+    FROM printer)
 ```
 
 Задача 11:
 ```sql
-SELECT AVG(speed) 
+SELECT 
+  AVG(speed) 
 FROM pc
 ```
 
 Задача 12:
 ```sql
-SELECT AVG(speed) 
+SELECT 
+  AVG(speed) 
 FROM laptop 
 WHERE speed IN (
-  SELECT speed 
-  FROM laptop 
-  WHERE price > 1000)
+    SELECT 
+      speed 
+    FROM laptop 
+    WHERE price > 1000)
 ```
 
 Задача 13:
 ```sql
-SELECT AVG(speed) 
+SELECT 
+  AVG(speed) 
 FROM pc 
 WHERE model IN (
-  SELECT model 
-  FROM product 
-  WHERE maker = 'A' 
-  AND type = 'PC')
+    SELECT 
+      model 
+    FROM product 
+    WHERE maker = 'A' 
+      AND type = 'PC')
 ```
 
 Задача 14:
 ```sql
-SELECT maker
-, MAX(type) 
+SELECT 
+    maker
+  , MAX(type) 
 FROM product 
 GROUP BY maker 
 HAVING COUNT(DISTINCT model) > 1 
-AND COUNT(DISTINCT type) = 1
+  AND COUNT(DISTINCT type) = 1
 ```
 
 Задача 15:
 ```sql
-SELECT hd 
+SELECT 
+  hd 
 FROM pc 
 GROUP BY hd 
 HAVING COUNT(hd) >= 2
@@ -158,58 +193,73 @@ HAVING COUNT(hd) >= 2
 
 Задача 16:
 ```sql
-SELECT DISTINCT a.model
-, b.model
-, a.speed
-, a.ram 
-FROM pc as a
-, pc as b 
+SELECT DISTINCT 
+    a.model
+  , b.model 
+  , a.speed
+  , a.ram 
+FROM 
+    pc as a
+  , pc as b 
 WHERE a.speed = b.speed 
-AND a.ram = b.ram 
-AND a.model > b.model
+  AND a.ram = b.ram 
+  AND a.model > b.model
 ```
 
 Задача 17:
 ```sql
-SELECT DISTINCT product.type
-, laptop.model
-, laptop.speed 
-FROM product
-, laptop 
+SELECT DISTINCT 
+    product.type
+  , laptop.model
+  , laptop.speed 
+FROM 
+    product
+  , laptop 
 WHERE laptop.speed < ALL (
-  SELECT speed 
-  FROM pc) 
-AND product.type = 'Laptop'
+    SELECT 
+      speed 
+    FROM pc) 
+  AND product.type = 'Laptop'
 ```
 
 Задача 18:
 ```sql
-SELECT DISTINCT product.maker
-, printer.price 
+SELECT DISTINCT 
+    product.maker
+  , printer.price 
 FROM product 
-INNER JOIN printer 
-ON product.model = printer.model 
+  INNER JOIN printer 
+    ON 
+      (
+      product.model = printer.model 
+      )
 WHERE printer.color = 'y' 
-AND printer.price IN (
-  SELECT MIN(price) 
-  FROM printer 
-  WHERE color = 'y')
+  AND printer.price IN (
+    SELECT 
+      MIN(price) 
+    FROM printer 
+    WHERE color = 'y')
 ```
 
 Задача 19:
 ```sql
-SELECT product.maker
-, AVG(laptop.screen) 
+SELECT 
+    product.maker
+  , AVG(laptop.screen) 
 FROM product 
-INNER JOIN laptop 
-ON product.model = laptop.model 
+  INNER JOIN laptop 
+    ON 
+    (
+    product.model = laptop.model 
+    )
 GROUP BY product.maker
 ```
 
 Задача 20:
 ```sql
-SELECT maker
-, COUNT(model) 
+SELECT 
+    maker
+  , COUNT(model) 
 FROM product 
 WHERE type = 'PC' 
 GROUP BY maker 
@@ -218,18 +268,21 @@ HAVING COUNT(model) >= 3
 
 Задача 21:
 ```sql
-SELECT product.maker
-, MAX(pc.price) 
-FROM product
-, pc 
+SELECT 
+    product.maker
+  , MAX(pc.price) 
+FROM 
+    product
+  , pc 
 WHERE product.model = pc.model 
 GROUP BY product.maker
 ```
 
 Задача 22:
 ```sql
-SELECT speed
-, AVG(price) 
+SELECT 
+    speed
+  , AVG(price) 
 FROM pc 
 WHERE speed > 600 
 GROUP BY speed
@@ -237,108 +290,142 @@ GROUP BY speed
 
 Задача 23:
 ```sql
-SELECT DISTINCT product.maker 
+SELECT DISTINCT 
+  product.maker 
 FROM product 
-INNER JOIN pc 
-ON product.model = pc.model 
+  INNER JOIN pc 
+    ON 
+    (
+    product.model = pc.model 
+    )
 WHERE pc.speed >= 750 
-AND product.maker IN (
-  SELECT product.maker 
-  FROM product 
-  INNER JOIN laptop 
-  ON product.model = laptop.model 
-  WHERE laptop.speed >= 750)
+  AND product.maker IN (
+    SELECT 
+      product.maker 
+    FROM product 
+      INNER JOIN laptop 
+        ON
+          (
+          product.model = laptop.model 
+          )
+    WHERE laptop.speed >= 750)
 ```
 
 Задача 24:
 ```sql
-SELECT model 
+SELECT 
+  model 
 FROM (
-  SELECT model
-  , price 
-  FROM pc 
-  UNION 
-  SELECT model
-  , price 
-  FROM laptop 
-  UNION 
-  SELECT model
-  , price 
-  FROM printer) table_first 
-WHERE price = (
-  SELECT MAX(price) 
-  FROM (
-    SELECT price 
+    SELECT 
+        model
+      , price 
     FROM pc 
     UNION 
-    SELECT price 
+    SELECT 
+        model
+      , price 
     FROM laptop 
     UNION 
-    SELECT price 
-    FROM printer) table_second)
+    SELECT 
+        model
+      , price 
+    FROM printer) table_first 
+WHERE price = (
+    SELECT 
+      MAX(price) 
+    FROM (
+      SELECT 
+        price 
+      FROM pc 
+      UNION 
+      SELECT 
+        price 
+      FROM laptop 
+      UNION 
+      SELECT 
+        price 
+      FROM printer) table_second)
 ```
 
 Задача 25:
 ```sql
-SELECT DISTINCT maker 
+SELECT DISTINCT 
+  maker 
 FROM product 
 WHERE model IN (
-  SELECT model 
-  FROM pc 
-  WHERE ram = (
-    SELECT MIN(ram) 
-    FROM pc) 
-  AND speed = (
-    SELECT MAX(speed) 
+    SELECT 
+      model 
     FROM pc 
     WHERE ram = (
-      SELECT MIN(ram) 
-      FROM pc))) 
-AND maker IN(
-  SELECT maker 
-  FROM product 
-  WHERE type = 'printer')
+        SELECT 
+          MIN(ram) 
+        FROM pc) 
+      AND speed = (
+        SELECT 
+          MAX(speed) 
+        FROM pc 
+        WHERE ram = (
+          SELECT 
+            MIN(ram) 
+          FROM pc))) 
+  AND maker IN(
+      SELECT 
+        maker 
+      FROM product 
+      WHERE type = 'printer')
 ```
 
 Задача 26:
 ```sql
-SELECT AVG(price) 
+SELECT 
+  AVG(price) 
 FROM (
-  (SELECT price 
+  (SELECT 
+    price 
   FROM pc 
   WHERE model IN(
-    SELECT model 
+    SELECT 
+      model 
     FROM product 
     WHERE maker = 'A')) 
   UNION ALL
-  (SELECT price 
+  (SELECT 
+    price 
   FROM laptop 
   WHERE model IN(
-    SELECT model 
+    SELECT 
+      model 
     FROM product 
     WHERE maker = 'A'))) as t
 ```
 
 Задача 27:
 ```sql
-SELECT product.maker
-, AVG(pc.hd) as hdsr 
+SELECT 
+    product.maker
+  , AVG(pc.hd) as hdsr 
 FROM product 
-INNER JOIN pc 
-ON product.model = pc.model 
+  INNER JOIN pc 
+    ON 
+    (
+    product.model = pc.model 
+    )
 GROUP BY product.maker 
 HAVING product.maker IN(
-  SELECT maker 
+  SELECT 
+    maker 
   FROM product 
   WHERE type = 'printer')
 ```
 
 Задача 28:
 ```sql
-SELECT COUNT(maker) 
+SELECT 
+  COUNT(maker) 
 FROM (
-  SELECT maker
-  , COUNT(model) as kol 
+  SELECT 
+      maker
+    , COUNT(model) as kol 
   FROM product 
   GROUP BY maker 
   HAVING COUNT(model) = 1) as t
@@ -346,84 +433,112 @@ FROM (
 
 Задача 29:
 ```sql
-SELECT income_o.point
-, income_o.date
-, income_o.inc
-, outcome_o.out 
+SELECT 
+    income_o.point
+  , income_o.date
+  , income_o.inc
+  , outcome_o.out 
 FROM income_o 
-LEFT JOIN outcome_o 
-ON income_o.point = outcome_o.point 
-AND income_o.date = outcome_o.date
+  LEFT JOIN outcome_o 
+    ON
+    (
+    income_o.point = outcome_o.point 
+    AND 
+    income_o.date = outcome_o.date
+    )
 UNION
-SELECT outcome_o.point
-, outcome_o.date
-, income_o.inc
-, outcome_o.out 
+SELECT 
+    outcome_o.point
+  , outcome_o.date
+  , income_o.inc
+  , outcome_o.out 
 FROM income_o 
-RIGHT JOIN outcome_o 
-ON income_o.point = outcome_o.point 
-AND income_o.date = outcome_o.date
+  RIGHT JOIN outcome_o 
+    ON 
+    (
+    income_o.point = outcome_o.point 
+    AND 
+    income_o.date = outcome_o.date
+    )
 ```
 
 Задача 30:
 ```sql
-SELECT point
-, date
-, SUM(sumout)
-, SUM(suminc) 
+SELECT 
+    point
+  , date
+  , SUM(sumout)
+  , SUM(suminc) 
 FROM(
-  SELECT point
-  , date
-  , SUM(inc) as suminc
-  , null as sumout 
+  SELECT 
+      point
+    , date
+    , SUM(inc) as suminc
+    , null as sumout 
   FROM income 
-  GROUP BY point
-  , date 
+  GROUP BY 
+      point
+    , date 
   UNION 
-  SELECT point
-  , date
-  , null as suminc
-  , SUM(out) as sumout 
+  SELECT 
+      point
+    , date
+    , null as suminc
+    , SUM(out) as sumout 
   FROM outcome 
-  GROUP BY point
-  , date ) as t 
-GROUP BY point
-, date 
+  GROUP BY 
+      point
+    , date ) as t 
+GROUP BY 
+    point
+  , date 
 ORDER BY point
 
 ```
 
 Задача 31:
 ```sql
-SELECT class
-, country 
+SELECT 
+    class
+  , country 
 FROM classes 
 WHERE bore >= 16
 ```
 
 Задача 32:
 ```sql
-SELECT country
-, CAST( AVG(0.5*(power(bore,3))) AS NUMERIC(6,2)) 
+SELECT 
+    country
+  , CAST( AVG(0.5*(power(bore,3))) AS NUMERIC(6,2)) 
 FROM (
-  SELECT country
-  , classes.class
-  , bore
-  , name 
+  SELECT 
+      country
+    , classes.class
+    , bore
+    , name 
   FROM classes 
-  LEFT JOIN ships 
-  ON classes.class=ships.class 
+    LEFT JOIN ships 
+      ON
+        (
+        classes.class=ships.class 
+        )
   UNION 
-  SELECT DISTINCT country
-  , class
-  , bore
-  , ship 
+  SELECT DISTINCT 
+      country
+    , class
+    , bore
+    , ship 
   FROM classes table1 
-  LEFT JOIN outcomes table2 
-  ON table1.class=table2.ship 
+    LEFT JOIN outcomes table2 
+      ON
+        (
+        table1.class=table2.ship 
+        )
   WHERE ship=class 
-  AND ship NOT IN (
-    SELECT name FROM ships) ) t
+    AND ship NOT IN (
+       SELECT 
+        name 
+       FROM ships) ) t
 WHERE name IS NOT NULL 
 GROUP BY country
 
@@ -431,85 +546,104 @@ GROUP BY country
 
 Задача 33:
 ```sql
-SELECT ship 
+SELECT 
+  ship 
 FROM outcomes 
 WHERE battle = 'North Atlantic' 
-AND result = 'sunk'
+  AND result = 'sunk'
 ```
 
 Задача 34:
 ```sql
-SELECT DISTINCT ships.name  
-FROM ships
-, classes 
+SELECT DISTINCT 
+  ships.name  
+FROM 
+    ships
+  , classes 
 WHERE ships.class = classes.class 
-AND (
-  ships.launched >= 1922 
-  AND ships.launched IS NOT NULL )  
-AND classes.displacement > 35000 
-AND classes.type = 'bb'
+  AND (
+    ships.launched >= 1922 
+    AND ships.launched IS NOT NULL )  
+  AND classes.displacement > 35000 
+  AND classes.type = 'bb'
 ```
 
 Задача 35:
 ```sql
-SELECT DISTINCT model
-, type 
+SELECT DISTINCT 
+    model
+  , type 
 FROM product 
 WHERE model NOT LIKE '%[^0-9]%' 
 UNION
-SELECT DISTINCT model
-, type 
+SELECT DISTINCT 
+    model
+  , type 
 FROM product 
 WHERE model NOT LIKE '%[^a-zA-Z]%'
 ```
 
 Задача 36:
 ```sql
-SELECT DISTINCT name 
+SELECT DISTINCT 
+  name 
 FROM ships 
 WHERE name IN(
-  SELECT DISTINCT class 
+  SELECT DISTINCT 
+    class 
   FROM classes)
 UNION
-SELECT DISTINCT ship 
+SELECT DISTINCT 
+  ship 
 FROM outcomes 
 WHERE ship IN (
-  SELECT DISTINCT classes.class 
-  FROM classes
-  , ships 
+  SELECT DISTINCT 
+    classes.class 
+  FROM 
+      classes
+    , ships 
   WHERE classes.class NOT IN (
-    SELECT DISTINCT name 
+    SELECT DISTINCT 
+      name 
     FROM ships 
     WHERE name IN(
       SELECT DISTINCT 
-      class FROM classes)))
+        class 
+      FROM classes)))
 ```
 
 Задача 37:
 ```sql
-SELECT DISTINCT cl.class 
+SELECT DISTINCT 
+  cl.class 
 FROM classes cl 
-LEFT JOIN (
-  SELECT class
-  , name 
-  FROM ships 
-  UNION 
-  SELECT ship
-  , ship 
-  FROM outcomes) AS sl 
-ON sl.class = cl.class 
+  LEFT JOIN (
+    SELECT 
+        class
+      , name 
+    FROM ships 
+    UNION 
+    SELECT 
+        ship
+      , ship 
+    FROM outcomes) AS sl 
+    ON 
+    (
+    sl.class = cl.class 
+    )
 GROUP BY cl.class 
 HAVING COUNT(sl.name) = 1
 ```
 
 Задача 38:
 ```sql
-SELECT country 
+SELECT 
+  country 
 FROM classes 
 WHERE type = 'bb'
 INTERSECT 
 SELECT 
-country 
+  country 
 FROM classes 
 WHERE type = 'bc'
 ```
@@ -517,28 +651,39 @@ WHERE type = 'bc'
 Задача 39:
 ```sql
 SELECT DISTINCT 
-outcomes.ship 
+  outcomes.ship 
 FROM outcomes 
-LEFT JOIN battles 
-ON outcomes.battle = battles.name 
+  LEFT JOIN battles 
+    ON
+      (
+      outcomes.battle = battles.name 
+      )
 WHERE EXISTS (
-  SELECT a.ship
-  , b.date 
+  SELECT 
+      a.ship
+    , b.date 
   FROM outcomes as a 
-  LEFT JOIN battles as b 
-  ON a.battle = b.name 
+    LEFT JOIN battles as b 
+      ON
+        (
+        a.battle = b.name 
+        )
   WHERE battles.date > b.date 
-  AND a.result = 'damaged' 
-  AND outcomes.ship = a.ship)
+    AND a.result = 'damaged' 
+    AND outcomes.ship = a.ship)
 ```
 
 Задача 40:
 ```sql
-SELECT classes.class
-, ships.name
-, classes.country 
+SELECT 
+    classes.class
+  , ships.name
+  , classes.country 
 FROM ships 
-LEFT JOIN classes 
-ON ships.class = classes.class 
+  LEFT JOIN classes 
+    ON
+      (
+      ships.class = classes.class 
+      )
 WHERE numguns >= 10
 ```
